@@ -36,7 +36,6 @@ lspconfig.eslint.setup {
   capabilities = nvlsp.capabilities,
 }
 
-
 local jdtls_bin = "jdtls"
 
 lspconfig.jdtls.setup {
@@ -44,18 +43,33 @@ lspconfig.jdtls.setup {
   on_init = nvlsp.on_init,
   capabilities = nvlsp.capabilities,
   settings = {
-    configuration = {
-      runtimes = {
-        {
-          name = "JavaSE-21",
-          path = "/opt/homebrew/opt/openjdk@21",
-          default = true,
+    java = {
+
+      configuration = {
+        runtimes = {
+          {
+            name = "JavaSE-21",
+            path = "/opt/homebrew/opt/openjdk@21",
+            default = true,
+          },
+
+          {
+            name = "JavaSE-17",
+            path = "~/.sdkman/candidates/java/17.0.14-tem",
+            default = true,
+          },
+
+          {
+            name = "JavaSE-11",
+            path = "~/.sdkman/candidates/java/11.0.25-amzn",
+            default = true,
+          },
         },
       },
     },
   },
   cmd = {
     jdtls_bin,
-    "--jvm-arg=" .. os.getenv("JDTLS_JVM_ARGS")
+    "--jvm-arg=" .. os.getenv "JDTLS_JVM_ARGS",
   },
 }
