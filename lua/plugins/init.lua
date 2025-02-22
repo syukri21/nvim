@@ -18,6 +18,13 @@ return {
   -- These are some examples, uncomment them if you want to see them work!
   {
     "neovim/nvim-lspconfig",
+    opts = {
+      servers = {
+        jinja_lsp = {
+          filetypes = { "jinja", "html" },
+        },
+      },
+    },
     config = function()
       require "configs.lspconfig"
     end,
@@ -25,17 +32,9 @@ return {
 
   {
     "nvim-treesitter/nvim-treesitter",
-    opts = {
-      ensure_installed = {
-        "javascript",
-        "vim",
-        "lua",
-        "vimdoc",
-        "html",
-        "css",
-        "rust",
-      },
-    },
+    config = function()
+      require "configs.treesitter"
+    end,
   },
 
   {
