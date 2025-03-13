@@ -4,6 +4,13 @@ return {
     -- event = 'BufWritePre', -- uncomment for format on save
     opts = require "configs.conform",
   },
+  -- harpoon
+  {
+    "ThePrimeagen/harpoon",
+    config = function()
+      require("harpoon").setup {}
+    end,
+  },
 
   {
 
@@ -383,25 +390,193 @@ return {
       "nvim-tree/nvim-web-devicons",
     },
   },
-  -- Remove the `use` here if you're using folke/lazy.nvim.
   {
-    "Exafunction/codeium.vim",
-
+    "github/copilot.vim",
     event = "BufEnter",
     config = function()
-      -- Change '<C-g>' here to any keycode you like.
-      vim.keymap.set("i", "<C-g>", function()
-        return vim.fn["codeium#Accept"]()
-      end, { expr = true, silent = true })
-      vim.keymap.set("i", "<c-;>", function()
-        return vim.fn["codeium#CycleCompletions"](1)
-      end, { expr = true, silent = true })
-      vim.keymap.set("i", "<c-,>", function()
-        return vim.fn["codeium#CycleCompletions"](-1)
-      end, { expr = true, silent = true })
-      vim.keymap.set("i", "<c-x>", function()
-        return vim.fn["codeium#Clear"]()
-      end, { expr = true, silent = true })
+      vim.keymap.set("i", "<C-g>", 'copilot#Accept("\\<CR>")', {
+        expr = true,
+        replace_keycodes = false,
+      })
+      vim.g.copilot_no_tab_map = true
     end,
+  },
+  {
+    "CopilotC-Nvim/CopilotChat.nvim",
+    dependencies = {
+      { "github/copilot.vim" }, -- or zbirenbaum/copilot.lua
+      { "nvim-lua/plenary.nvim", branch = "master" }, -- for curl, log and async functions
+    },
+    branch = "main",
+    cmd = "CopilotChat",
+    opts = function()
+      local user = vim.env.USER or "User"
+      user = user:sub(1, 1):upper() .. user:sub(2)
+      return {
+        auto_insert_mode = true,
+        question_header = "  " .. user .. " ",
+        answer_header = "  Copilot ",
+        window = {
+          width = 0.4,
+        },
+      }
+    end,
+    keys = {
+      { "<c-s>", "<CR>", ft = "copilot-chat", desc = "Submit Prompt", remap = true },
+      { "<leader>a", "", desc = "+ai", mode = { "n", "v" } },
+      {
+        "<leader>aa",
+        function()
+          return require("CopilotChat").toggle()
+        end,
+        desc = "Toggle (CopilotChat)",
+        mode = { "n", "v" },
+      },
+      {
+        "<leader>ax",
+        function()
+          return require("CopilotChat").reset()
+        end,
+        desc = "Clear (CopilotChat)",
+        mode = { "n", "v" },
+      },
+      {
+        "<leader>aq",
+        function()
+          vim.ui.input({
+            prompt = "Quick Chat: ",
+          }, function(input)
+            if input ~= "" then
+              require("CopilotChat").ask(input)
+            end
+          end)
+        end,
+        desc = "Quick Chat (CopilotChat)",
+        mode = { "n", "v" },
+      },
+      {
+        "<leader>ap",
+        function()
+          require("CopilotChat").select_prompt()
+        end,
+        desc = "Prompt Actions (CopilotChat)",
+        mode = { "n", "v" },
+      },
+    },
+    config = function(_, opts)
+      local chat = require "CopilotChat"
+
+      vim.api.nvim_create_autocmd("BufEnter", {
+        pattern = "copilot-chat",
+        callback = function()
+          vim.opt_local.relativenumber = false
+          vim.opt_local.number = false
+        end,
+      })
+
+      chat.setup(opts)
+    end,
+  },
+
+  {
+    "nvim-java/nvim-java",
+    config = function()
+      require("java").setup {
+        {
+          --  list of file that exists in root of the project
+          root_markers = {
+            "settings.gradle",
+            "settings.gradle.kts",
+            "pom.xml",
+            "build.gradle",
+            "mvnw",
+            "gradlew",
+            "build.gradle",
+            "build.gradle.kts",
+            ".git",
+          },
+
+          jdtls = {
+            version = "v1.43.0",
+          },
+
+          lombok = {
+            version = "nightly",
+          },
+
+          -- load java test plugins
+          java_test = {
+            enable = true,
+            version = "0.43.0",
+          },
+
+          -- load java debugger plugins
+          java_debug_adapter = {
+            enable = true,
+            version = "0.58.1",
+          },
+
+          spring_boot_tools = {
+            enable = true,
+            version = "1.59.0",
+          },
+
+          jdk = {
+            -- install jdk using mason.nvim
+            auto_install = true,
+            version = "17.0.2",
+          },
+
+          notifications = {
+            -- enable 'Configuring DAP' & 'DAP configured' messages on start up
+            dap = true,
+          },
+
+          -- We do multiple verifications to make sure things are in place to run this
+          -- plugin
+          verification = {
+            -- nvim-java checks for the order of execution of following
+            -- * require('java').setup()
+            -- * require('lspconfig').jdtls.setup()
+            -- IF they are not executed in the correct order, you will see a error
+            -- notification.
+            -- Set following to false to disable the notification if you know what you
+            -- are doing
+            invalid_order = true,
+
+            -- nvim-java checks if the require('java').setup() is called multiple
+            -- times.
+            -- IF there are multiple setup calls are executed, an error will be shown
+            -- Set following property value to false to disable the notification if
+            -- you know what you are doing
+            duplicate_setup_calls = true,
+
+            -- nvim-java checks if nvim-java/mason-registry is added correctly to
+            -- mason.nvim plugin.
+            -- IF it's not registered correctly, an error will be thrown and nvim-java
+            -- will stop setup
+            invalid_mason_registry = false,
+          },
+        },
+      }
+    end,
+  },
+  {
+    "christoomey/vim-tmux-navigator",
+    cmd = {
+      "TmuxNavigateLeft",
+      "TmuxNavigateDown",
+      "TmuxNavigateUp",
+      "TmuxNavigateRight",
+      "TmuxNavigatePrevious",
+      "TmuxNavigatorProcessList",
+    },
+    keys = {
+      { "<c-h>", "<cmd><C-U>TmuxNavigateLeft<cr>" },
+      { "<c-j>", "<cmd><C-U>TmuxNavigateDown<cr>" },
+      { "<c-k>", "<cmd><C-U>TmuxNavigateUp<cr>" },
+      { "<c-l>", "<cmd><C-U>TmuxNavigateRight<cr>" },
+      { "<c-\\>", "<cmd><C-U>TmuxNavigatePrevious<cr>" },
+    },
   },
 }

@@ -1,10 +1,18 @@
 require "nvchad.mappings"
 
--- add yours here
+
+-- remove default <leader>h mapping for open new terminal
+vim.api.nvim_set_keymap("n", "<leader>h", "<Nop>", { noremap = true, silent = true })
 
 vim.opt.conceallevel = 1
 
 local map = vim.keymap.set
+
+map("n", "<leader>hp", "<cmd>lua require('harpoon.mark').add_file()<CR>", { desc = "Add file to harpoon" })
+map("n", "<leader>ho", "<cmd>lua require('harpoon.ui').toggle_quick_menu()<CR>" , { desc = "Toggle harpoon quick menu" })
+for i, key in ipairs({'h', 'j', 'k', 'l', 'n', 'm', ';', "'", ',', '.'}) do
+    map("n", "<leader>h" .. key, string.format("<cmd>lua require('harpoon.ui').nav_file(%d)<CR>", i), { desc = "Navigate to harpoon file " .. (i ) })
+end
 
 map("n", ";", ":", { desc = "CMD enter command mode" })
 map("i", "jk", "<ESC>")
