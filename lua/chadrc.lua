@@ -14,7 +14,25 @@ M.base46 = {
   },
 }
 
--- M.nvdash = { load_on_startup = true }
+M.nvdash = { load_on_startup = true }
+
+M.plugins = {
+  override = {
+    ["ibhagwan/fzf-lua"] = {
+      opts = {
+        winopts = {
+          height = 1.85, -- window height
+          width = 0.80,  -- window width
+          preview = {
+            layout = "vertical", -- preview layout
+            vertical = "up:45%", -- preview size
+          },
+        },
+      },
+    },
+  },
+}
+
 -- M.ui = {
 --       tabufline = {
 --          lazyload = false

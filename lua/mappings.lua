@@ -28,3 +28,5 @@ require("aerial").setup {
 -- You probably also want to set a keymap to toggle aerial
 map("n", "<leader>a", "<cmd>AerialToggle!<CR>")
 -- map({ "n", "i", "v" }, "<C-s>", "<cmd> w <cr>")
+--
+
