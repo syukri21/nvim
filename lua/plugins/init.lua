@@ -283,4 +283,39 @@ return {
       { "<c-\\>", "<cmd><C-U>TmuxNavigatePrevious<cr>" },
     },
   },
+  {
+    "nvim-telescope/telescope-fzf-native.nvim",
+    build = "make",
+  },
+  {
+    "nvim-telescope/telescope.nvim",
+    dependencies = { "nvim-lua/plenary.nvim", "nvim-telescope/telescope-fzf-native.nvim" },
+    config = function()
+      require("telescope").setup {
+        defaults = {
+          prompt_prefix = "🔍 ",
+          selection_caret = "➤ ",
+          layout_config = {
+            horizontal = {
+              preview_width = 0.3,
+            },
+            vertical = {
+              mirror = false,
+            },
+            width = 0.9,
+            height = 0.8,
+          },
+          sorting_strategy = "ascending",
+          winblend = 10,
+        },
+        config = {
+          fzf = {
+            override_generic_sorter = true,
+            override_file_sorter = true,
+            case_mode = "smart_case",
+          },
+        },
+      }
+    end,
+  },
 }
