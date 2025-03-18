@@ -49,10 +49,9 @@ lspconfig.jdtls.setup {
         runtimes = {
           {
             name = "JavaSE-21",
-            path = "/opt/homebrew/opt/openjdk@21",
+            path = "~/.sdkman/candidates/java/21.0.1-open",
             default = true,
           },
-
           {
             name = "JavaSE-17",
             path = "~/.sdkman/candidates/java/17.0.14-tem",
