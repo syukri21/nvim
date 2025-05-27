@@ -430,6 +430,7 @@ return {
         auto_insert_mode = true,
         question_header = "  " .. user .. " ",
         answer_header = "  Copilot ",
+        model = "claude-3.7-sonnet",
         window = {
           width = 0.4,
         },
