@@ -11,6 +11,7 @@ ts.setup {
     "css",
     "rust",
     "jinja",
+    "php"
   },
   highlight = {
     enable = true,

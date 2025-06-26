@@ -30,3 +30,30 @@ map("n", "<leader>a", "<cmd>AerialToggle!<CR>")
 -- map({ "n", "i", "v" }, "<C-s>", "<cmd> w <cr>")
 --
 
+-- Rust-specific keymaps
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "rust",
+  callback = function()
+    local bufnr = vim.api.nvim_get_current_buf()
+    
+    -- Code action keymap
+    vim.keymap.set(
+      "n", 
+      "<leader>ca", 
+      function()
+        vim.lsp.buf.code_action()
+      end,
+      { silent = true, buffer = bufnr }
+    )
+    
+    -- Enhanced hover keymap
+    vim.keymap.set(
+      "n", 
+      "K",
+      function()
+        vim.lsp.buf.hover()
+      end,
+      { silent = true, buffer = bufnr }
+    )
+  end
+})

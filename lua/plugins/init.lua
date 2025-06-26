@@ -172,8 +172,11 @@ return {
       vim.api.nvim_create_autocmd("BufEnter", {
         pattern = "copilot-chat",
         callback = function()
-          vim.opt_local.relativenumber = false
+          vim.opt_local.relativenumber = true
           vim.opt_local.number = false
+          vim.opt_local.wrap = true
+          vim.opt_local.linebreak = true
+          vim.opt_local.breakindent = true
         end,
       })
 
@@ -266,7 +269,6 @@ return {
   },
   {
     "christoomey/vim-tmux-navigator",
-    lazy = false,
     cmd = {
       "TmuxNavigateLeft",
       "TmuxNavigateDown",
@@ -318,4 +320,13 @@ return {
       }
     end,
   },
+  {
+    "StanAngeloff/php.vim",
+    ft = "php",
+  },
+  -- {
+  --   "mrcjkb/rustaceanvim",
+  --   version = "^6", -- Recommended
+  --   lazy = false, -- This plugin is already lazy
+  -- },
 }
