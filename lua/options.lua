@@ -1,4 +1,5 @@
 require "nvchad.options"
+require "configs.telescope"
 
 -- add yours here!
 

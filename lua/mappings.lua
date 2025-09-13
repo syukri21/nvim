@@ -1,6 +1,5 @@
 require "nvchad.mappings"
 
-
 -- remove default <leader>h mapping for open new terminal
 vim.api.nvim_set_keymap("n", "<leader>h", "<Nop>", { noremap = true, silent = true })
 
@@ -9,9 +8,14 @@ vim.opt.conceallevel = 1
 local map = vim.keymap.set
 
 map("n", "<leader>hp", "<cmd>lua require('harpoon.mark').add_file()<CR>", { desc = "Add file to harpoon" })
-map("n", "<leader>ho", "<cmd>lua require('harpoon.ui').toggle_quick_menu()<CR>" , { desc = "Toggle harpoon quick menu" })
-for i, key in ipairs({'h', 'j', 'k', 'l', 'n', 'm', ';', "'", ',', '.'}) do
-    map("n", "<leader>h" .. key, string.format("<cmd>lua require('harpoon.ui').nav_file(%d)<CR>", i), { desc = "Navigate to harpoon file " .. (i ) })
+map("n", "<leader>ho", "<cmd>lua require('harpoon.ui').toggle_quick_menu()<CR>", { desc = "Toggle harpoon quick menu" })
+for i, key in ipairs { "h", "j", "k", "l", "n", "m", ";", "'", ",", "." } do
+  map(
+    "n",
+    "<leader>h" .. key,
+    string.format("<cmd>lua require('harpoon.ui').nav_file(%d)<CR>", i),
+    { desc = "Navigate to harpoon file " .. i }
+  )
 end
 
 map("n", ";", ":", { desc = "CMD enter command mode" })
@@ -35,25 +39,18 @@ vim.api.nvim_create_autocmd("FileType", {
   pattern = "rust",
   callback = function()
     local bufnr = vim.api.nvim_get_current_buf()
-    
+
     -- Code action keymap
-    vim.keymap.set(
-      "n", 
-      "<leader>ca", 
-      function()
-        vim.lsp.buf.code_action()
-      end,
-      { silent = true, buffer = bufnr }
-    )
-    
+    vim.keymap.set("n", "<leader>ca", function()
+      vim.lsp.buf.code_action()
+    end, { silent = true, buffer = bufnr })
+
     -- Enhanced hover keymap
-    vim.keymap.set(
-      "n", 
-      "K",
-      function()
-        vim.lsp.buf.hover()
-      end,
-      { silent = true, buffer = bufnr }
-    )
-  end
+    vim.keymap.set("n", "K", function()
+      vim.lsp.buf.hover()
+    end, { silent = true, buffer = bufnr })
+
+    -- require("nvim-tree.api").tree.resize(150)
+  end,
 })
+
