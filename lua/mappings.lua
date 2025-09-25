@@ -30,7 +30,7 @@ require("aerial").setup {
   end,
 }
 -- You probably also want to set a keymap to toggle aerial
-map("n", "<leader>a", "<cmd>AerialToggle!<CR>")
+map("n", "<leader>o", "<cmd>AerialToggle!<CR>")
 -- map({ "n", "i", "v" }, "<C-s>", "<cmd> w <cr>")
 --
 
@@ -54,3 +54,40 @@ vim.api.nvim_create_autocmd("FileType", {
   end,
 })
 
+vim.keymap.set("n", "<leader>co", function()
+  local current_buf = vim.api.nvim_get_current_buf()
+  for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+    if vim.api.nvim_buf_is_loaded(buf) and buf ~= current_buf then
+      vim.api.nvim_buf_delete(buf, { force = true })
+    end
+  end
+end, { desc = "Close all buffers except this one" })
+
+-- place this in one of your configuration file(s)
+local hop = require "hop"
+local directions = require("hop.hint").HintDirection
+vim.keymap.set("", "f", function()
+  hop.hint_char1 { direction = directions.AFTER_CURSOR, current_line_only = true }
+end, { remap = true })
+vim.keymap.set("", "F", function()
+  hop.hint_char1 { direction = directions.BEFORE_CURSOR, current_line_only = true }
+end, { remap = true })
+vim.keymap.set("", "t", function()
+  hop.hint_char1 { direction = directions.AFTER_CURSOR, current_line_only = true, hint_offset = -1 }
+end, { remap = true })
+vim.keymap.set("", "T", function()
+  hop.hint_char1 { direction = directions.BEFORE_CURSOR, current_line_only = true, hint_offset = 1 }
+end, { remap = true })
+
+vim.keymap.set("n", "F", "<cmd>HopPattern<CR>", { desc = "Hop to word" })
+
+vim.keymap.set("n", "<leader>lf", function()
+  vim.cmd "!leptosfmt %"
+end, { desc = "Format Rust code with leptosfmt" })
+
+-- create a keymap to copy relative file path to clipboardo
+vim.keymap.set("n", "<leader>cp", function()
+  local filepath = vim.fn.expand "%:."
+  vim.fn.setreg("+", filepath)
+  print("Copied relative file path to clipboard: " .. filepath)
+end, { desc = "Copy relative file path to clipboard" })

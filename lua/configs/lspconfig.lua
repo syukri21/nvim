@@ -3,7 +3,7 @@ require("nvchad.configs.lspconfig").defaults()
 
 local lspconfig = require "lspconfig"
 -- EXAMPLE
-local servers = { "cssls", "lua_ls", "marksman", "eslint", "ts_ls", "html", "jsonls", "rust_analyzer", "intelephense" }
+local servers = { "cssls", "lua_ls", "marksman", "eslint", "ts_ls", "html", "jsonls", "intelephense" }
 local nvlsp = require "nvchad.configs.lspconfig"
 
 -- lsps with default config
@@ -22,6 +22,7 @@ lspconfig.html.setup {
   filetypes = { "html", "jinja", "htmldjango" },
 }
 -- configuring single server, example: typescript
+
 lspconfig.rust_analyzer.setup {
   on_attach = nvlsp.on_attach,
   on_init = nvlsp.on_init,
@@ -30,10 +31,22 @@ lspconfig.rust_analyzer.setup {
     ["rust-analyzer"] = {
       cargo = {
         allFeatures = true,
-        features = "ssr",
+        features = "all",
+      },
+      rustfmt = {
+        overrideCommand = { "leptosfmt", "--stdin", "--rustfmt" },
       },
       diagnostics = {
-        enable = true,
+        disabled = { "proc-macro-disabled", "inactive-code" },
+      },
+      procMacro = {
+        ignored = {
+          leptos_macro = {
+            -- optional: --
+            -- "component",
+            "server",
+          },
+        },
       },
     },
   },
@@ -50,7 +63,6 @@ lspconfig.eslint.setup {
   on_init = nvlsp.on_init,
   capabilities = nvlsp.capabilities,
 }
-
 
 lspconfig.eslint.setup {
   on_attach = nvlsp.on_attach,
