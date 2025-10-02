@@ -1,17 +1,15 @@
 local ts = require "nvim-treesitter.configs"
 
--- Register rstml parser if not already provided by the plugin
+-- Register rstml parser (force overwrite to ensure correct paths)
 local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
-if not parser_config.rstml then
-  parser_config.rstml = {
-    install_info = {
-      url = "https://github.com/rayliwell/tree-sitter-rstml",
-      files = { "src/parser.c", "src/scanner.c" },
-      branch = "main",
-    },
-    filetype = "rstml",
-  }
-end
+parser_config.rstml = {
+  install_info = {
+    url = "https://github.com/rayliwell/tree-sitter-rstml",
+    files = { "rstml/src/parser.c", "rstml/src/scanner.c" },
+    branch = "main",
+  },
+  filetype = "rstml",
+}
 
 ts.setup {
   ensure_installed = {
