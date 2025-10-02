@@ -1,5 +1,18 @@
 local ts = require "nvim-treesitter.configs"
 
+-- Register rstml parser if not already provided by the plugin
+local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
+if not parser_config.rstml then
+  parser_config.rstml = {
+    install_info = {
+      url = "https://github.com/rayliwell/tree-sitter-rstml",
+      files = { "src/parser.c", "src/scanner.c" },
+      branch = "main",
+    },
+    filetype = "rstml",
+  }
+end
+
 ts.setup {
   ensure_installed = {
     "jinja",
@@ -10,8 +23,8 @@ ts.setup {
     "html",
     "css",
     "rust",
-    "jinja",
-    "php"
+    "php",
+    "rstml",
   },
   highlight = {
     enable = true,

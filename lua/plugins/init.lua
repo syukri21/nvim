@@ -39,6 +39,7 @@ return {
 
   {
     "nvim-treesitter/nvim-treesitter",
+    build = ":TSUpdate",
     config = function()
       require "configs.treesitter"
     end,
@@ -489,5 +490,58 @@ return {
       -- you can configure Hop the way you like here; see :h hop-config
       require("hop").setup { keys = "etovxqpdygfblzhckisuran" }
     end,
+  },
+  {
+    "nvim-pack/nvim-spectre",
+    event = "BufRead",
+    config = function()
+      require("spectre").setup()
+    end,
+  },
+  {
+    "tpope/vim-fugitive",
+    cmd = {
+      "G",
+      "Git",
+      "Gdiffsplit",
+      "Gread",
+      "Gwrite",
+      "Ggrep",
+      "GMove",
+      "GDelete",
+      "GBrowse",
+      "GRemove",
+      "GRename",
+      "Glgrep",
+      "Gedit",
+    },
+    ft = { "fugitive" },
+  },
+  {
+    "j-hui/fidget.nvim",
+    opts = {
+      -- options
+    },
+  },
+  {
+    "windwp/nvim-autopairs",
+    event = "InsertEnter",
+    config = true,
+    -- use opts = {} for passing setup options
+    -- this is equalent to setup({}) function
+  },
+  {
+    "rayliwell/nvim-ts-autotag",
+    config = function()
+      require("nvim-ts-autotag").setup()
+    end,
+  },
+  {
+    "folke/trouble.nvim",
+    cmd = "TroubleToggle",
+  },
+  {
+    "sindrets/diffview.nvim",
+    event = "BufRead",
   },
 }
