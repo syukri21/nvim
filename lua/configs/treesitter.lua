@@ -1,14 +1,14 @@
 local ts = require "nvim-treesitter.configs"
 
--- Register rstml parser (force overwrite to ensure correct paths)
+-- Register combined rust_with_rstml parser (used_by rust)
 local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
-parser_config.rstml = {
+parser_config.rust_with_rstml = {
   install_info = {
     url = "https://github.com/rayliwell/tree-sitter-rstml",
-    files = { "rstml/src/parser.c", "rstml/src/scanner.c" },
+    files = { "rust_with_rstml/src/parser.c", "rust_with_rstml/src/scanner.c" },
     branch = "main",
   },
-  filetype = "rstml",
+  used_by = { "rust" },
 }
 
 ts.setup {
@@ -22,7 +22,7 @@ ts.setup {
     "css",
     "rust",
     "php",
-    "rstml",
+    "rust_with_rstml",
   },
   auto_install = true,
   highlight = {

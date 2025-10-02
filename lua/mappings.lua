@@ -7,16 +7,14 @@ vim.opt.conceallevel = 1
 
 local map = vim.keymap.set
 
-map("n", "<leader>hp", "<cmd>lua require('harpoon.mark').add_file()<CR>", { desc = "Add file to harpoon" })
-map("n", "<leader>ho", "<cmd>lua require('harpoon.ui').toggle_quick_menu()<CR>", { desc = "Toggle harpoon quick menu" })
-for i, key in ipairs { "h", "j", "k", "l", "n", "m", ";", "'", ",", "." } do
-  map(
-    "n",
-    "<leader>h" .. key,
-    string.format("<cmd>lua require('harpoon.ui').nav_file(%d)<CR>", i),
-    { desc = "Navigate to harpoon file " .. i }
-  )
-end
+map("n", "\\1", "<cmd>lua require('harpoon.ui').nav_file(1)<CR>", { desc = "Go to harpoon file 1" })
+map("n", "\\2", "<cmd>lua require('harpoon.ui').nav_file(2)<CR>", { desc = "Go to harpoon file 2" })
+map("n", "\\3", "<cmd>lua require('harpoon.ui').nav_file(3)<CR>", { desc = "Go to harpoon file 3" })
+map("n", "\\4", "<cmd>lua require('harpoon.ui').nav_file(4)<CR>", { desc = "Go to harpoon file 4" })
+map("n", "\\5", "<cmd>lua require('harpoon.ui').nav_file(5)<CR>", { desc = "Go to harpoon file 5" })
+map("n", "\\6", "<cmd>lua require('harpoon.ui').nav_file(6)<CR>", { desc = "Go to harpoon file 6" })
+map("n", "\\a", "<cmd>lua require('harpoon.mark').add_file()<CR>", { desc = "Add to harpoon" })
+map("n", "\\q", "<cmd>lua require('harpoon.ui').toggle_quick_menu()<CR>", { desc = "Harpoon toggle quick menu" })
 
 map("n", ";", ":", { desc = "CMD enter command mode" })
 map("i", "jk", "<ESC>")
