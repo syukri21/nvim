@@ -26,6 +26,7 @@ ts.setup {
     "php",
     "rstml",
   },
+  auto_install = true,
   highlight = {
     enable = true,
     additional_vim_regex_highlighting = false,
