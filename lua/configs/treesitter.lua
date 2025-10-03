@@ -2,6 +2,16 @@ local ts = require "nvim-treesitter.configs"
 
 -- Override default rust parser with combined rust_with_rstml grammar
 local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
+
+parser_config.rstml = {
+  install_info = {
+    url = "https://github.com/rayliwell/tree-sitter-rstml",
+    files = { "rstml/src/parser.c", "rstml/src/scanner.c" },
+    branch = "main",
+  },
+  used_by = { "rust" },
+}
+
 parser_config.rust_with_rstml = {
   install_info = {
     url = "https://github.com/rayliwell/tree-sitter-rstml",
@@ -13,17 +23,10 @@ parser_config.rust_with_rstml = {
 
 -- Explicitly register the combined grammar for rust (older Neovim compatibility)
 if vim.treesitter and vim.treesitter.language and vim.treesitter.language.register then
-  pcall(vim.treesitter.language.register, "rust_with_rstml", "rust")
-end
-
--- Ensure parser install dir is on runtimepath so queries load
-local site = vim.fn.stdpath('data') .. '/site'
-if not string.find(vim.o.runtimepath, site, 1, true) then
-  vim.opt.rtp:append(site)
+  pcall(vim.treesitter.language.register, "rust_with_rstml", "rust", "rstml")
 end
 
 ts.setup {
-  install_dir = vim.fn.stdpath('data') .. '/site',
   ensure_installed = {
     "jinja",
     "javascript",
@@ -33,12 +36,17 @@ ts.setup {
     "html",
     "css",
     "php",
+    "rust",
     "rust_with_rstml",
+    "rstml"
   },
   auto_install = true,
   highlight = {
     enable = true,
-    additional_vim_regex_highlighting = false,
+  },
+  sync_install = false,
+  indent = {
+    enable = true,
   },
   textobjects = {
     move = {
@@ -75,7 +83,6 @@ ts.setup {
       },
     },
   },
-
   incremental_selection = {
     enable = true,
     keymaps = {

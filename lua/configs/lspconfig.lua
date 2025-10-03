@@ -1,6 +1,5 @@
 -- load defaults i.e lua_lsp
 require("nvchad.configs.lspconfig").defaults()
-
 local lspconfig = require "lspconfig"
 -- EXAMPLE
 local servers = { "cssls", "lua_ls", "marksman", "eslint", "ts_ls", "html", "jsonls", "intelephense" }
@@ -38,6 +37,9 @@ lspconfig.rust_analyzer.setup {
       },
       diagnostics = {
         disabled = { "proc-macro-disabled", "inactive-code" },
+      },
+      checkOnSave = {
+        enable = false,
       },
       procMacro = {
         ignored = {
